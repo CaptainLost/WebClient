@@ -1,0 +1,72 @@
+<!-- <div class="h-full flex flex-col items-center justify-center gap-4">
+    <p-card>
+        <div class="text-3xl font-medium text-center">Login</div>
+
+        <p-divider />
+
+        <div class="space-y-4">
+            <p-floatlabel variant="on">
+                <input pInputText id="username_input" autocomplete="off" class="w-full" />
+                <label for="username_input">Username</label>
+            </p-floatlabel>
+
+            <p-floatlabel variant="on">
+                <p-password inputId="username_password" [feedback]="false" [toggleMask]="true" inputStyleClass="w-full" class ="w-full" />
+                <label for="username_password">Password</label>
+            </p-floatlabel>
+
+            <div class="flex gap-4 mt-1">
+                <p-button label="Submit" severity="primary" class="w-full" [outlined]="true" styleClass="w-full" (onClick)="onLoginButtonClicked()" />
+            </div>
+        </div>
+    </p-card>
+</div> -->
+
+<div class="h-full flex flex-col items-center justify-center gap-4">
+    <p-card>
+        <div class="text-3xl font-medium text-center" style="color: var(--text-color)">Login</div>
+
+        <p-divider />
+
+        <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)" class="space-y-4">
+            <p-floatlabel variant="on">
+                <input 
+                    pInputText 
+                    id="username_input" 
+                    name="username"
+                    [(ngModel)]="username" 
+                    autocomplete="off" 
+                    required
+                    class="w-full" 
+                />
+                <label for="username_input">Username</label>
+            </p-floatlabel>
+
+            <p-floatlabel variant="on">
+                <p-password 
+                    inputId="username_password" 
+                    name="password"
+                    [(ngModel)]="password"
+                    [feedback]="false" 
+                    [toggleMask]="true" 
+                    inputStyleClass="w-full"
+                    class="w-full" 
+                    required
+                />
+                <label for="username_password">Password</label>
+            </p-floatlabel>
+
+            <div class="flex gap-4 mt-1">
+                <p-button 
+                    type="submit"
+                    label="Submit" 
+                    severity="primary" 
+                    class="w-full" 
+                    styleClass="w-full"
+                    [outlined]="true" 
+                    [disabled]="loginForm.invalid"
+                />
+            </div>
+        </form>
+    </p-card>
+</div>
