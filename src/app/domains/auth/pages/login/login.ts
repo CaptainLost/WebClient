@@ -45,7 +45,7 @@ export class LoginComponent {
           if (errorResponse.status === 401) {
             const apiError = errorResponse.error as ApiError;
 
-            this.toastService.showErrorToast(apiError.error, apiError?.message);
+            this.toastService.showErrorToast(apiError?.message);
           }
         }
       });
