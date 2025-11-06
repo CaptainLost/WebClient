@@ -7,12 +7,17 @@ import { MessageService } from 'primeng/api';
 export class ToastService {
   private messageService: MessageService = inject(MessageService);
 
-  showErrorToast(title: string, message: string) {
+  showErrorToast(message: string): void;
+  showErrorToast(title: string, message: string): void;
+  showErrorToast(titleOrMessage: string, message?: string): void {
+    const title = message !== undefined ? titleOrMessage : 'Error';
+    const detail = message !== undefined ? message : titleOrMessage;
+
     this.messageService.add(
       {
         severity: 'error',
         summary: title,
-        detail: message,
+        detail: detail,
         key: 'br'
       });
   }

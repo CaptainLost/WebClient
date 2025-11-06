@@ -8,7 +8,7 @@ export const routes: Routes = [
     },
     { 
         path: 'auth', 
-        loadChildren: () => import('./core/auth/auth.routes').then(m => m.authRoutes)
+        loadChildren: () => import('./domains/auth/auth.routes').then(m => m.authRoutes)
     },
     
     { path: '**', component: PageNotFoundComponent },

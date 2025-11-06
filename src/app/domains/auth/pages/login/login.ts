@@ -9,7 +9,7 @@ import { ButtonModule } from "primeng/button";
 import { ToastService } from '../../../../shared/utils/toast';
 import { DividerModule } from 'primeng/divider';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../stores/auth-store';
+import { AuthService } from '../../services/auth.service';
 import { LoginRequest } from '../../models/login-request';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -26,9 +26,9 @@ export class LoginComponent {
   private readonly authService = inject(AuthService);
   private readonly toastService = inject(ToastService);
   private readonly router = inject(Router);
-  private readonly fb = inject(FormBuilder);
+  private readonly formBuilder = inject(FormBuilder);
 
-  protected readonly loginForm = this.fb.nonNullable.group({
+  protected readonly loginForm = this.formBuilder.nonNullable.group({
     username: ['', [Validators.required]],
     password: ['', [Validators.required]]
   });

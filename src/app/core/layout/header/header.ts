@@ -1,9 +1,12 @@
-import { ChangeDetectionStrategy, Component, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, signal, inject, computed } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { Menubar } from 'primeng/menubar';
 import { Menu } from 'primeng/menu';
 import { ButtonModule } from 'primeng/button';
 import { APP_ROUTES } from '../../../shared/config/routes.config';
+import { AuthService } from '../../../domains/auth/services/auth.service';
+import { Router } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-header',
@@ -13,12 +16,29 @@ import { APP_ROUTES } from '../../../shared/config/routes.config';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent implements OnInit {
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
+  
   protected readonly topBarItems = signal<MenuItem[]>([]);
-  protected readonly userMenuItems = signal<MenuItem[]>([]);
+  protected readonly isAuthenticated = toSignal(this.authService.isAuthenticated$);
+  protected readonly userMenuItems = computed<MenuItem[]>(() => {
+    return this.isAuthenticated() ? [
+      {
+        label: 'Logout',
+        icon: 'pi pi-sign-out',
+        command: () => this.onLogout()
+      }
+    ] : [
+      {
+        label: 'Login',
+        icon: 'pi pi-sign-in',
+        routerLink: APP_ROUTES.auth.login
+      }
+    ];
+  });
 
   ngOnInit(): void {
     this.buildTopBarMenuItems();
-    this.buildUserPopupMenuItems();
   }
 
   private buildTopBarMenuItems(): void {
@@ -77,13 +97,11 @@ export class HeaderComponent implements OnInit {
     ]);
   }
 
-  private buildUserPopupMenuItems(): void {
-    this.userMenuItems.set([
-      {
-        label: 'Login',
-        icon: 'pi pi-sign-in',
-        routerLink: APP_ROUTES.auth.login
-      },
-    ]);
+  private onLogout(): void {
+    this.authService.logout().subscribe({
+      next: () => {
+        this.router.navigate([APP_ROUTES.auth.login]);
+      }
+    });
   }
 }
