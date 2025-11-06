@@ -1,0 +1,50 @@
+<div class="h-full flex flex-col items-center justify-center gap-4">
+  <p-card>
+    <div class="text-3xl font-medium text-center" style="color: var(--text-color)">Login</div>
+
+    <p-divider />
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-4">
+      <p-floatlabel variant="on">
+        <p-iconfield>
+          <p-inputicon class="pi pi-user" />
+          <input 
+            pInputText 
+            id="username_input" 
+            formControlName="username"
+            autocomplete="off" 
+            class="w-full" 
+          />
+          <label for="username_input">Username</label>
+        </p-iconfield>
+      </p-floatlabel>
+
+      <p-floatlabel variant="on">
+        <p-iconfield>
+          <p-inputicon class="pi pi-key" />
+          <p-password 
+            inputId="username_password" 
+            formControlName="password"
+            [feedback]="false" 
+            [toggleMask]="true" 
+            inputStyleClass="w-full"
+            class="w-full" 
+          />
+          <label for="username_password">Password</label>
+        </p-iconfield>
+      </p-floatlabel>
+
+      <div class="flex gap-4 mt-1">
+        <p-button 
+          type="submit"
+          label="Submit" 
+          severity="primary" 
+          class="w-full" 
+          styleClass="w-full"
+          [outlined]="true" 
+          [disabled]="loginForm.invalid"
+        />
+      </div>
+    </form>
+  </p-card>
+</div>

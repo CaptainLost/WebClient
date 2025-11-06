@@ -1,14 +1,16 @@
-import { Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Header } from "./components/header/header";
+import { HeaderComponent } from "./core/layout/header/header";
 import { ToastModule } from 'primeng/toast';
+import { SpinnerComponent } from "./core/layout/spinner/spinner";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Header, ToastModule],
+  imports: [RouterOutlet, HeaderComponent, ToastModule, SpinnerComponent],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrl: './app.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class App {
+export class AppComponent {
   protected readonly title = signal('WebClient');
 }

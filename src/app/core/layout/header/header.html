@@ -1,0 +1,20 @@
+<div class="card">
+  <p-menubar [model]="topBarItems()">
+    <ng-template pTemplate="end">
+      <div class="flex items-center gap-2 mr-2">
+        <p-menu #userMenu [model]="userMenuItems()" [popup]="true" />
+
+        <p-button
+          icon="pi pi-cog"
+          severity="info"
+          [outlined]="true" />
+
+        <p-button
+          icon="pi pi-user"
+          severity="info"
+          [outlined]="true"
+          (onClick)="userMenu.toggle($event)"/>
+      </div>
+    </ng-template>
+  </p-menubar>
+</div>

@@ -1,0 +1,11 @@
+@if (loadingService.isLoading$ | async) {
+  <div class="spinner-overlay">
+    <div class="spinner-container">
+      <p-progressSpinner
+        strokeWidth="4"
+        animationDuration="0.8s"
+        ariaLabel="Loading">
+      </p-progressSpinner>
+    </div>
+  </div>
+}
