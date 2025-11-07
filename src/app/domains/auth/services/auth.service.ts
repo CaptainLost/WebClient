@@ -14,18 +14,26 @@ export class AuthService {
   private readonly httpClient = inject(HttpClient);
   private readonly apiUrl = environment.apiUrl;
   private readonly isAuthenticatedSubject = new BehaviorSubject<boolean | null>(null);
+  private readonly sessionSubject = new BehaviorSubject<SessionResponse | null>(null);
   
   public readonly isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
+  public readonly session$ = this.sessionSubject.asObservable();
 
   login(request: LoginRequest): Observable<void> {
     return this.httpClient.post<void>(`${this.apiUrl}${API_ENDPOINTS.auth.login}`, request).pipe(
-      tap(() => this.isAuthenticatedSubject.next(true))
+      tap(() => {
+        this.isAuthenticatedSubject.next(true);
+        this.checkAuthStatus().subscribe();
+      })
     );
   }
 
   logout(): Observable<void> {
     return this.httpClient.post<void>(`${this.apiUrl}${API_ENDPOINTS.auth.logout}`, {}).pipe(
-      tap(() => this.isAuthenticatedSubject.next(false))
+      tap(() => {
+        this.isAuthenticatedSubject.next(false);
+        this.sessionSubject.next(null);
+      })
     );
   }
 
@@ -33,11 +41,13 @@ export class AuthService {
     return this.httpClient.get<SessionResponse>(`${this.apiUrl}${API_ENDPOINTS.auth.session}`).pipe(
       map((response) => {
         this.isAuthenticatedSubject.next(response.isAuthenticated);
+        this.sessionSubject.next(response);
 
         return response.isAuthenticated;
       }),
       catchError(() => {
         this.isAuthenticatedSubject.next(false);
+        this.sessionSubject.next(null);
         
         return of(false);
       })

@@ -5,12 +5,13 @@ import { Menu } from 'primeng/menu';
 import { ButtonModule } from 'primeng/button';
 import { APP_ROUTES } from '../../../shared/config/routes.config';
 import { AuthService } from '../../../domains/auth/services/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { AvatarModule } from 'primeng/avatar';
 
 @Component({
   selector: 'app-header',
-  imports: [Menubar, Menu, ButtonModule],
+  imports: [Menubar, Menu, ButtonModule, RouterModule, AvatarModule],
   templateUrl: './header.html',
   styleUrl: './header.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -18,21 +19,34 @@ import { toSignal } from '@angular/core/rxjs-interop';
 export class HeaderComponent implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
-  
+
+  protected readonly loginRoute = APP_ROUTES.auth.login;
   protected readonly topBarItems = signal<MenuItem[]>([]);
   protected readonly isAuthenticated = toSignal(this.authService.isAuthenticated$);
+  protected readonly session = toSignal(this.authService.session$);
+  protected readonly username = computed(() => this.session()?.username ?? '???');
+  protected readonly userRole = signal<string>('Rank');
   protected readonly userMenuItems = computed<MenuItem[]>(() => {
-    return this.isAuthenticated() ? [
+    if (!this.isAuthenticated()) {
+      return [];
+    }
+
+    return [
       {
-        label: 'Logout',
+        label: 'Edit profile',
+        icon: 'pi pi-user-edit'
+      },
+      {
+        label: 'Preferences',
+        icon: 'pi pi-cog'
+      },
+      {
+        separator: true
+      },
+      {
+        label: 'Log out',
         icon: 'pi pi-sign-out',
         command: () => this.onLogout()
-      }
-    ] : [
-      {
-        label: 'Login',
-        icon: 'pi pi-sign-in',
-        routerLink: APP_ROUTES.auth.login
       }
     ];
   });
@@ -95,6 +109,10 @@ export class HeaderComponent implements OnInit {
         icon: 'pi pi-envelope'
       }
     ]);
+  }
+
+  protected onUserMenuToggle(menu: Menu, event: Event): void {
+    menu.toggle(event);
   }
 
   private onLogout(): void {

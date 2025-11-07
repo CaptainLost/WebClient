@@ -6,6 +6,7 @@ import { InputIconModule } from 'primeng/inputicon';
 import { IconFieldModule } from 'primeng/iconfield';
 import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from "primeng/button";
+import { CheckboxModule } from 'primeng/checkbox';
 import { ToastService } from '../../../../shared/utils/toast';
 import { DividerModule } from 'primeng/divider';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -17,7 +18,7 @@ import { ApiError } from '../../../../shared/models/api-error';
 
 @Component({
   selector: 'app-login',
-  imports: [CardModule, InputTextModule, PasswordModule, FloatLabelModule, IconFieldModule, InputIconModule, ButtonModule, DividerModule, ReactiveFormsModule],
+  imports: [CardModule, InputTextModule, PasswordModule, FloatLabelModule, IconFieldModule, InputIconModule, ButtonModule, CheckboxModule, DividerModule, ReactiveFormsModule],
   templateUrl: './login.html',
   styleUrl: './login.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -30,7 +31,8 @@ export class LoginComponent {
 
   protected readonly loginForm = this.formBuilder.nonNullable.group({
     username: ['', [Validators.required]],
-    password: ['', [Validators.required]]
+    password: ['', [Validators.required]],
+    isPersistent: [false]
   });
 
   protected onSubmit(): void {

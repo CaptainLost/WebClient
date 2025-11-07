@@ -1,6 +1,9 @@
 <div class="h-full flex flex-col items-center justify-center gap-4">
-  <p-card>
-    <div class="text-3xl font-medium text-center" style="color: var(--text-color)">Login</div>
+  <p-card class="p-8 w-full max-w-md">
+    <div>
+      <h1 class="text-3xl font-semibold mb-2" style="color: var(--text-color)">Log in</h1>
+      <p class="text-sm" style="color: var(--text-color-secondary)">Please enter your details</p>
+    </div>
 
     <p-divider />
 
@@ -21,7 +24,7 @@
 
       <p-floatlabel variant="on">
         <p-iconfield>
-          <p-inputicon class="pi pi-key" />
+          <p-inputicon class="pi pi-lock" />
           <p-password 
             inputId="username_password" 
             formControlName="password"
@@ -34,14 +37,25 @@
         </p-iconfield>
       </p-floatlabel>
 
+      <div class="flex justify-between items-center">
+        <div class="flex items-center gap-2">
+          <p-checkbox 
+            inputId="remember_me" 
+            [binary]="true"
+            formControlName="isPersistent"
+          />
+          <label for="remember_me" class="text-sm cursor-pointer" style="color: var(--text-color)">Remember Me</label>
+        </div>
+        <a class="text-sm cursor-pointer" style="color: var(--primary-color)">Reset password</a>
+      </div>
+
       <div class="flex gap-4 mt-1">
         <p-button 
           type="submit"
-          label="Submit" 
+          label="Log In" 
           severity="primary" 
           class="w-full" 
           styleClass="w-full"
-          [outlined]="true" 
           [disabled]="loginForm.invalid"
         />
       </div>

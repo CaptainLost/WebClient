@@ -1,20 +1,39 @@
 <div class="card">
-  <p-menubar [model]="topBarItems()">
-    <ng-template pTemplate="end">
-      <div class="flex items-center gap-2 mr-2">
-        <p-menu #userMenu [model]="userMenuItems()" [popup]="true" />
-
-        <p-button
-          icon="pi pi-cog"
-          severity="info"
-          [outlined]="true" />
-
-        <p-button
-          icon="pi pi-user"
-          severity="info"
-          [outlined]="true"
-          (onClick)="userMenu.toggle($event)"/>
-      </div>
-    </ng-template>
-  </p-menubar>
+	<p-menubar [model]="topBarItems()">
+		<ng-template pTemplate="start">
+			<div class="flex items-center gap-2 ml-2">
+				<span class="font-bold text-xl text-primary">MyApp</span>
+			</div>
+		</ng-template>
+		<ng-template pTemplate="end">
+			<div class="flex items-center gap-2 mr-2">
+				@if (isAuthenticated()) {
+					<p-menu #userMenu [model]="userMenuItems()" [popup]="true" />
+					<p-button 
+						[outlined]="true" 
+						(onClick)="userMenu.toggle($event)" 
+						styleClass="w-[130px] h-[50px]">
+						<div class="flex items-center gap-2 w-full h-full">
+							<p-avatar class="bg-primary" icon="pi pi-user" shape="circle" />
+							<div class="flex flex-col items-center justify-center flex-1">
+								<span class="font-semibold text-sm">{{ username() }}</span>
+								<span class="text-xs text-gray-500">{{ userRole() }}</span>
+							</div>
+						</div>
+					</p-button>
+				}
+				@else {
+					<p-button 
+						[outlined]="true"
+						[routerLink]="loginRoute"
+						styleClass="w-[130px] h-[50px]">
+						<div class="flex items-center gap-2 w-full justify-center">
+							<i class="pi pi-sign-in"></i>
+							<span>Log In</span>
+						</div>
+					</p-button>
+				}
+			</div>
+		</ng-template>
+	</p-menubar>
 </div>
