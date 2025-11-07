@@ -111,10 +111,6 @@ export class HeaderComponent implements OnInit {
     ]);
   }
 
-  protected onUserMenuToggle(menu: Menu, event: Event): void {
-    menu.toggle(event);
-  }
-
   private onLogout(): void {
     this.authService.logout().subscribe({
       next: () => {
